@@ -23,8 +23,11 @@ import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity
 {
+    //Títulos gravados em uma variável estática para fácil uso ao invés de usar strings Hard Coded
     public static final String LISTA_TITLE = "Lista de Personagens";
     public static final String CHAVE_PERSONAGEM = "personagem";
+
+    //Variável do personagem DAO e adapter
     private final PersonagemDAO dao = new PersonagemDAO();
     private ArrayAdapter<Personagem> adapter;
 
@@ -39,14 +42,18 @@ public class ListaPersonagemActivity extends AppCompatActivity
         ConfiguraLista();
     }
 
+
     @Override
     protected void onResume()
     {
         super.onResume();
+        //Limpa a lista ao dar resume
         adapter.clear();
+        //Retorna todos os valores do Array de Personagens
         adapter.addAll(dao.GetInfo());
     }
 
+    //Remoção de Item
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
@@ -57,20 +64,23 @@ public class ListaPersonagemActivity extends AppCompatActivity
     public boolean onContextItemSelected(@NonNull MenuItem item)
     {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        //Pega a posição do personagem na lista
         Personagem personagemClicado = adapter.getItem(menuInfo.position);
+        //Remove ele da lista
         adapter.remove(personagemClicado);
         return super.onContextItemSelected(item);
     }
 
     private void OnClickAdd()
     {
+        //Encontra o botão de adicionar
         FloatingActionButton botaoAdd = findViewById(R.id.fab_add);
         botaoAdd.setOnClickListener(new View.OnClickListener()
         {
+            //Abre Formulário
             @Override
             public void onClick(View v)
             {
-                //Abre Formulário
                 startActivity(new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class));
             }
         });
@@ -78,26 +88,14 @@ public class ListaPersonagemActivity extends AppCompatActivity
 
     private void ConfiguraLista()
     {
+        //Encontra a main list de personagens
         ListView listaDePersonagens = findViewById(R.id.main_list_personagens);
+        //Atribui a lista
         ListaDePersonagens(listaDePersonagens);
+        //Configura para editar o personagem clicado
         ConfiguraItem(listaDePersonagens);
         registerForContextMenu(listaDePersonagens);
     }
-
-    /*private void ConfiguraLista2(ListView listaDePersonagens, List<Personagem> personagens)
-    {
-        listaDePersonagens.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Personagem personagemClicado = personagens.get(position);
-                Intent formulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-                formulario.putExtra(CHAVE_PERSONAGEM, personagemClicado);
-                startActivity(formulario);
-            }
-        });
-    }*/
 
     private void ListaDePersonagens(ListView listaDePersonagens)
     {
@@ -112,7 +110,9 @@ public class ListaPersonagemActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
+                //Atribui o personagem na posição
                 Personagem personagemClicado = (Personagem) adapterView.getItemAtPosition(position);
+                //Edita o personagem atribuido
                 EditarFormulario(personagemClicado);
             }
         });
@@ -120,8 +120,10 @@ public class ListaPersonagemActivity extends AppCompatActivity
 
     private void EditarFormulario(Personagem personagemClicado)
     {
+        //Pega a informação da Activity do formulário
         Intent formulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
         formulario.putExtra(CHAVE_PERSONAGEM, personagemClicado);
+        //Vai para o formulário
         startActivity(formulario);
     }
 

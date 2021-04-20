@@ -9,10 +9,12 @@ public class Personagem implements Serializable
     private String saveNome;
     private String saveAltura;
     private String saveNascimento;
+    //ID para identificar qual é a posição do Personagem
     private int saveID = 0;
 
     public Personagem(String saveNome, String saveAltura, String saveNascimento)
     {
+        //Construtor das váriaveis Nome, Altura e Data de Nascimento
         this.saveNome = saveNome;
         this.saveAltura = saveAltura;
         this.saveNascimento = saveNascimento;
@@ -21,6 +23,14 @@ public class Personagem implements Serializable
     public Personagem()
     {
         //Construtor vazio para não dar erro ao deixar os campos vazios
+    }
+
+    //Getters e Setters
+    @NonNull
+    @Override
+    public String toString()
+    {
+        return saveNome;
     }
 
     public String getSaveNome()
@@ -53,13 +63,6 @@ public class Personagem implements Serializable
         this.saveNascimento = saveNascimento;
     }
 
-    @NonNull
-    @Override
-    public String toString()
-    {
-        return saveNome;
-    }
-
     public void setSaveID(int saveID)
     {
         this.saveID = saveID;
@@ -70,6 +73,7 @@ public class Personagem implements Serializable
         return saveID;
     }
 
+    //Retorna "true" caso o ID for maior que 0, o que significa que há algum dado salvo
     public boolean ValidaID()
     {
         return saveID > 0;
