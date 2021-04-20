@@ -133,7 +133,7 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         //Seta os campos
         personagem.setSaveNome(saveNome);
         personagem.setSaveAltura(saveAltura);
-        personagem.setSaveNascimento(saveNascimento);;
+        personagem.setSaveNascimento(saveNascimento);
     }
 
 }
