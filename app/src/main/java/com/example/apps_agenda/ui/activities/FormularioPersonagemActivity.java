@@ -101,10 +101,10 @@ public class FormularioPersonagemActivity extends AppCompatActivity {
         //Se o ID for válido (de um personagem que já existe)
         if (personagem.ValidaID())
         {
-            //Edita um personagem
+            //Edita o personagem
             dao.Editar(personagem);
             //Fecha a Activity
-            finish();
+            //finish();
         }
         else
         {

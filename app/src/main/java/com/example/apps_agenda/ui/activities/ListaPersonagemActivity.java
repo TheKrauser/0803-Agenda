@@ -1,10 +1,8 @@
 package com.example.apps_agenda.ui.activities;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,14 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.apps_agenda.R;
 import com.example.apps_agenda.dao.PersonagemDAO;
 import com.example.apps_agenda.model.Personagem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity
 {
@@ -53,21 +51,46 @@ public class ListaPersonagemActivity extends AppCompatActivity
         adapter.addAll(dao.GetInfo());
     }
 
+    private void Remover(Personagem personagem)
+    {
+        dao.Remover(personagem);
+        adapter.remove(personagem);
+    }
+
     //Remoção de Item
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Remover");
+        getMenuInflater().inflate(R.menu.activity_lista_personagem_menu, menu);
     }
 
     public boolean onContextItemSelected(@NonNull MenuItem item)
     {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int itemID = item.getItemId();
+        if (itemID == R.id.activity_lista_personagem_menu_remover)
+        {
+            new AlertDialog.Builder(this)
+                    .setTitle("Removendo Personagem")
+                    .setMessage("Deseja Remover")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                            Personagem personagemClicado = adapter.getItem(menuInfo.position);
+                            Remover(personagemClicado);
+                        }
+                    })
+                    .setNegativeButton("Não", null)
+                    .show();
+        }
+
+
+        /*AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         //Pega a posição do personagem na lista
         Personagem personagemClicado = adapter.getItem(menuInfo.position);
         //Remove ele da lista
-        adapter.remove(personagemClicado);
+        adapter.remove(personagemClicado);*/
         return super.onContextItemSelected(item);
     }
 
@@ -118,11 +141,11 @@ public class ListaPersonagemActivity extends AppCompatActivity
         });
     }
 
-    private void EditarFormulario(Personagem personagemClicado)
+    private void EditarFormulario(Personagem personagem)
     {
         //Pega a informação da Activity do formulário
         Intent formulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-        formulario.putExtra(CHAVE_PERSONAGEM, personagemClicado);
+        formulario.putExtra(CHAVE_PERSONAGEM, personagem);
         //Vai para o formulário
         startActivity(formulario);
     }

@@ -1,7 +1,5 @@
 package com.example.apps_agenda.dao;
 
-import androidx.collection.ArraySet;
-
 import com.example.apps_agenda.model.Personagem;
 
 import java.util.ArrayList;
@@ -21,7 +19,7 @@ public class PersonagemDAO
         //Salva
         personagens.add(personagemSalvo);
         //Incrementa 1 no ID para o próximo que for salvo
-        countID++;
+        countID ++;
     }
 
     //Editar o personagem selecionado
@@ -59,5 +57,15 @@ public class PersonagemDAO
     public List<Personagem> GetInfo()
     {
         return new ArrayList<>(personagens);
+    }
+
+    public void Remover(Personagem personagem)
+    {
+        Personagem personagemDeletado = PegaID(personagem);
+
+        if (personagemDeletado != null)
+        {
+            personagens.remove(personagemDeletado);
+        }
     }
 }
