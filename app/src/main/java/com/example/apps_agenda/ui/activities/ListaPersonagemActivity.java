@@ -23,7 +23,6 @@ public class ListaPersonagemActivity extends AppCompatActivity
 {
     //Títulos gravados em uma variável estática para fácil uso ao invés de usar strings Hard Coded
     public static final String LISTA_TITLE = "Lista de Personagens";
-    public static final String CHAVE_PERSONAGEM = "personagem";
 
     //Variável do personagem DAO e adapter
     private final PersonagemDAO dao = new PersonagemDAO();
@@ -53,6 +52,7 @@ public class ListaPersonagemActivity extends AppCompatActivity
 
     private void Remover(Personagem personagem)
     {
+        //Remove o personagem
         dao.Remover(personagem);
         adapter.remove(personagem);
     }
@@ -70,27 +70,28 @@ public class ListaPersonagemActivity extends AppCompatActivity
         int itemID = item.getItemId();
         if (itemID == R.id.activity_lista_personagem_menu_remover)
         {
+            //Cria o menu de Remover Personagem
             new AlertDialog.Builder(this)
                     .setTitle("Removendo Personagem")
                     .setMessage("Deseja Remover")
+                    //Opção Sim
                     .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(DialogInterface dialog, int which)
+                        {
                             AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                            //Pega o personagem que foi clicado
                             Personagem personagemClicado = adapter.getItem(menuInfo.position);
+                            //Remove
                             Remover(personagemClicado);
                         }
                     })
+                    //Opção Não
                     .setNegativeButton("Não", null)
+                    //Mostra uma mensagem sem nada
                     .show();
         }
 
-
-        /*AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        //Pega a posição do personagem na lista
-        Personagem personagemClicado = adapter.getItem(menuInfo.position);
-        //Remove ele da lista
-        adapter.remove(personagemClicado);*/
         return super.onContextItemSelected(item);
     }
 
@@ -145,7 +146,7 @@ public class ListaPersonagemActivity extends AppCompatActivity
     {
         //Pega a informação da Activity do formulário
         Intent formulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-        formulario.putExtra(CHAVE_PERSONAGEM, personagem);
+        formulario.putExtra(ConstantesActivities.CHAVE_PERSONAGEM, personagem);
         //Vai para o formulário
         startActivity(formulario);
     }
