@@ -1,7 +1,6 @@
+
 package com.example.apps_agenda.model;
-
 import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
 public class Personagem implements Serializable
